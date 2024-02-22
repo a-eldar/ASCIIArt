@@ -29,27 +29,27 @@ public class ModifiedImage {
         return image.getHeight();
     }
 
-    public LinkedList<ModifiedImage> getSubImages(int resolution) {
+    public LinkedList<ModifiedImage> getSubImages(int subImageSize) {
         LinkedList<ModifiedImage> subImages = new LinkedList<>();
-        int subImageWidth = image.getWidth() / resolution;
-        int subImageHeight = image.getHeight() / resolution;
+        int subImageWidth = image.getWidth() / subImageSize;
+        int subImageHeight = image.getHeight() / subImageSize;
 
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                addSubImage(subImageHeight, subImageWidth, i, j, subImages);
+        for (int i = 0; i < subImageHeight; i++) {
+            for (int j = 0; j < subImageWidth; j++) {
+                addSubImage(subImageSize, i, j, subImages);
             }
         }
         return subImages;
     }
 
-    private void addSubImage(int subImageHeight, int subImageWidth, int i, int j, LinkedList<ModifiedImage> subImages) {
-        Color[][] subImagePixelArray = new Color[subImageHeight][subImageWidth];
-        for (int x = 0; x < subImageHeight; x++) {
-            for (int y = 0; y < subImageWidth; y++) {
-                subImagePixelArray[x][y] = image.getPixel(i * subImageWidth + y, j * subImageHeight + x);
+    private void addSubImage(int subImageSize, int i, int j, LinkedList<ModifiedImage> subImages) {
+        Color[][] subImagePixelArray = new Color[subImageSize][subImageSize];
+        for (int x = 0; x < subImageSize; x++) {
+            for (int y = 0; y < subImageSize; y++) {
+                subImagePixelArray[x][y] = image.getPixel(i * subImageSize + x, j * subImageSize + y);
             }
         }
-        subImages.add(new ModifiedImage(subImagePixelArray, subImageWidth, subImageHeight));
+        subImages.add(new ModifiedImage(subImagePixelArray, subImageSize, subImageSize));
     }
 
     public void addPadding() {
@@ -89,8 +89,8 @@ public class ModifiedImage {
 
     public double getBrightness(){
         double totalBrightness = 0;
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
+        for (int x = 0; x < image.getHeight(); x++) {
+            for (int y = 0; y < image.getWidth(); y++) {
                 totalBrightness += greyPixel(image.getPixel(x,y));
             }
         }

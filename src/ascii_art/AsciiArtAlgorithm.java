@@ -26,7 +26,7 @@ public class AsciiArtAlgorithm {
         image.addPadding();
         int height = image.getHeight() * width / image.getWidth();
         char[][] asciiArt = new char[height][width];
-        LinkedList<ModifiedImage> subImages = image.getSubImages(width);
+        LinkedList<ModifiedImage> subImages = image.getSubImages(image.getWidth() / width);
         Iterator<ModifiedImage> subImagesIterator = subImages.iterator();
 
         for (int i = 0; i < height; i++) {
