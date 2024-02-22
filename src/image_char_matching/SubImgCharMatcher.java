@@ -5,11 +5,25 @@ import java.util.*;
 public class SubImgCharMatcher {
     private final HashMap<Character, Double> brightnessMap;
     private static final HashMap<Character, Double> CHAR_BRIGHTNESS = new HashMap<>();
+    double maxBrightness;
+    double minBrightness;
 
-    public SubImgCharMatcher(char[] charset) {
+    public SubImgCharMatcher(char[] charset) throws IllegalArgumentException {
+        if (charset.length == 0) {
+            throw new IllegalArgumentException("Charset must contain at least one character");
+        }
         this.brightnessMap = new HashMap<>();
+        maxBrightness = Double.MIN_VALUE;
+        minBrightness = Double.MAX_VALUE;
         for (char c : charset) {
-            brightnessMap.put(c, getBrightness(c));
+            double brightness = getBrightness(c);
+            if (brightness > maxBrightness) {
+                maxBrightness = brightness;
+            }
+            if (brightness < minBrightness) {
+                minBrightness = brightness;
+            }
+            brightnessMap.put(c, brightness);
         }
         stretchCharBrightnessLinearly();
     }
@@ -40,12 +54,39 @@ public class SubImgCharMatcher {
 
     public void addChar(char c) {
         brightnessMap.put(c, getBrightness(c));
-        stretchCharBrightnessLinearly();
+        boolean changed = false;
+        if (brightnessMap.get(c) > maxBrightness) {
+            maxBrightness = brightnessMap.get(c);
+            changed = true;
+        }
+        if (brightnessMap.get(c) < minBrightness) {
+            minBrightness = brightnessMap.get(c);
+            changed = true;
+        }
+        if (changed) {
+            stretchCharBrightnessLinearly();
+        }
+        else {
+            stretchCharBrightnessLinearly(c);
+        }
     }
 
-
     public void removeChar(char c) {
+        if (brightnessMap.get(c) != maxBrightness && brightnessMap.get(c) != minBrightness) {
+            brightnessMap.remove(c);
+            return;
+        }
         brightnessMap.remove(c);
+        maxBrightness = Double.MIN_VALUE;
+        minBrightness = Double.MAX_VALUE;
+        for (double brightness : brightnessMap.values()) {
+            if (brightness > maxBrightness) {
+                maxBrightness = brightness;
+            }
+            if (brightness < minBrightness) {
+                minBrightness = brightness;
+            }
+        }
         stretchCharBrightnessLinearly();
     }
 
@@ -70,12 +111,13 @@ public class SubImgCharMatcher {
     }
 
     private void stretchCharBrightnessLinearly() {
-        double minBrightness = brightnessMap.values().stream().min(Double::compareTo).orElse(0.0);
-        double maxBrightness = brightnessMap.values().stream().max(Double::compareTo).orElse(1.0);
-
-        for (Map.Entry<Character, Double> entry : brightnessMap.entrySet()) {
-            double normalizedBrightness = (entry.getValue() - minBrightness) / (maxBrightness - minBrightness);
-            brightnessMap.put(entry.getKey(), normalizedBrightness);
+        for (char c : brightnessMap.keySet()) {
+            stretchCharBrightnessLinearly(c);
         }
+    }
+
+    private void stretchCharBrightnessLinearly(char c) {
+        double normalizedBrightness = (brightnessMap.get(c) - minBrightness) / (maxBrightness - minBrightness);
+        brightnessMap.put(c, normalizedBrightness);
     }
 }
