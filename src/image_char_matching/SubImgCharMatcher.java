@@ -4,6 +4,7 @@ import java.util.*;
 
 public class SubImgCharMatcher {
     private final HashMap<Character, Double> brightnessMap;
+    private static final HashMap<Character, Double> CHAR_BRIGHTNESS = new HashMap<>();
 
     public SubImgCharMatcher(char[] charset) {
         this.brightnessMap = new HashMap<>();
@@ -50,6 +51,10 @@ public class SubImgCharMatcher {
 
     /* Returns brightness between 0 and 1 */
     private double getBrightness(char c) {
+        if (CHAR_BRIGHTNESS.containsKey(c)) {
+            return CHAR_BRIGHTNESS.get(c);
+        }
+
         boolean[][] charArray = CharConverter.convertToBoolArray(c);
 
         int whitePixelCount = 0;
@@ -58,7 +63,10 @@ public class SubImgCharMatcher {
                 whitePixelCount += booleans[j] ? 1 : 0;
             }
         }
-        return (double) whitePixelCount / (charArray.length * charArray[0].length);
+
+        double result = (double) whitePixelCount / (charArray.length * charArray[0].length);
+        CHAR_BRIGHTNESS.put(c, result);
+        return result;
     }
 
     private void stretchCharBrightnessLinearly() {
