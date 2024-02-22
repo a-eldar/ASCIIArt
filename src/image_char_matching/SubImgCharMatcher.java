@@ -1,27 +1,31 @@
 package image_char_matching;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SubImgCharMatcher {
-    private final char[] charset;
-    private final Map<Character, Double> brightnessMap;
+    private final HashMap<Character, Double> brightnessMap;
 
     public SubImgCharMatcher(char[] charset) {
-        this.charset = charset;
         this.brightnessMap = new HashMap<>();
-        // Precompute brightness values for each character in charset
         for (char c : charset) {
             brightnessMap.put(c, getBrightness(c));
         }
+        stretchCharBrightnessLinearly();
     }
 
+    /**
+     * Get the character from the charset that best matches the given brightness.
+     * If there are multiple characters with the same brightness difference, return the one with the smallest ASCII value.
+     * @param brightness The brightness to match
+     * @return The character from the charset that best matches the given brightness
+     */
     public char getCharByImageBrightness(double brightness) {
-        char bestPossibleChar = charset[0];
-        double minBrightnessDifference = Math.abs(brightnessMap.get(bestPossibleChar) - brightness);
+        char bestPossibleChar = brightnessMap.keySet().iterator().next();
+        double minBrightnessDifference = Double.MAX_VALUE; // Initialize to maximum value
 
-        for (char c : charset) {
-            double currentBrightness = brightnessMap.get(c);
+        for (Map.Entry<Character, Double> entry : brightnessMap.entrySet()) {
+            char c = entry.getKey();
+            double currentBrightness = entry.getValue();
             double brightnessDifference = Math.abs(currentBrightness - brightness);
 
             if (brightnessDifference < minBrightnessDifference ||
@@ -34,38 +38,36 @@ public class SubImgCharMatcher {
     }
 
     public void addChar(char c) {
-        if (!brightnessMap.containsKey(c)) {
-            charset[findEmptyIndex()] = c;
-            brightnessMap.put(c, getBrightness(c));
-        }
+        brightnessMap.put(c, getBrightness(c));
+        stretchCharBrightnessLinearly();
     }
+
 
     public void removeChar(char c) {
-        if (brightnessMap.containsKey(c)) {
-            for (int i = 0; i < charset.length; i++) {
-                if (charset[i] == c) {
-                    charset[i] = '\0';
-                    break;
-                }
-            }
-            brightnessMap.remove(c);
-        }
+        brightnessMap.remove(c);
+        stretchCharBrightnessLinearly();
     }
 
-    // add methods if needed
+    /* Returns brightness between 0 and 1 */
     private double getBrightness(char c) {
         boolean[][] charArray = CharConverter.convertToBoolArray(c);
 
         int whitePixelCount = 0;
         for (boolean[] booleans : charArray) {
             for (int j = 0; j < charArray[0].length; j++) {
-                if (booleans[j]) {
-                    whitePixelCount++;
-                }
+                whitePixelCount += booleans[j] ? 1 : 0;
             }
         }
-
         return (double) whitePixelCount / (charArray.length * charArray[0].length);
     }
 
+    private void stretchCharBrightnessLinearly() {
+        double minBrightness = brightnessMap.values().stream().min(Double::compareTo).orElse(0.0);
+        double maxBrightness = brightnessMap.values().stream().max(Double::compareTo).orElse(1.0);
+
+        for (Map.Entry<Character, Double> entry : brightnessMap.entrySet()) {
+            double normalizedBrightness = (entry.getValue() - minBrightness) / (maxBrightness - minBrightness);
+            brightnessMap.put(entry.getKey(), normalizedBrightness);
+        }
+    }
 }
