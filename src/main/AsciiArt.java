@@ -9,13 +9,13 @@ public class AsciiArt {
     public static void main(String[] args) {
         ModifiedImage image;
         try {
-            image = new ModifiedImage("examples/cat.jpeg");
+            image = new ModifiedImage("examples/asaf.jpeg");
         }
         catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             return;
         }
-        int resolution = 256;
+        int resolution = 512;
         char[] asciiChars = new char[95];
         for (int i = 0; i < 95; i++) {
             asciiChars[i] = (char) (i + 32);
@@ -24,7 +24,7 @@ public class AsciiArt {
 
         AsciiArtAlgorithm algorithm = new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(asciiChars));
         char[][] asciiArt = algorithm.run();
-        HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("examples/cat.html", "Courier New");
+        HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("examples/asaf.html", "Courier New");
         htmlAsciiOutput.out(asciiArt);
     }
 }

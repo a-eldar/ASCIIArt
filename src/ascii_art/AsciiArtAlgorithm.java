@@ -23,9 +23,9 @@ public class AsciiArtAlgorithm {
         if (asciiArt != null) {
             return asciiArt;
         }
+        image.addPadding();
         int height = image.getHeight() * width / image.getWidth();
         char[][] asciiArt = new char[height][width];
-        image.addPadding();
         LinkedList<ModifiedImage> subImages = image.getSubImages(width);
         Iterator<ModifiedImage> subImagesIterator = subImages.iterator();
 
