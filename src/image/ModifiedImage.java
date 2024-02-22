@@ -13,8 +13,20 @@ public class ModifiedImage {
         this.image = new Image(filename);
     }
 
+    public ModifiedImage(Image image) {
+        this.image = image;
+    }
+
     public ModifiedImage(Color[][] pixelArray, int width, int height) {
         this.image = new Image(pixelArray, width, height);
+    }
+
+    public int getWidth() {
+        return image.getWidth();
+    }
+
+    public int getHeight() {
+        return image.getHeight();
     }
 
     public LinkedList<ModifiedImage> getSubImages(int resolution) {
@@ -24,16 +36,20 @@ public class ModifiedImage {
 
         for (int i = 0; i < resolution; i++) {
             for (int j = 0; j < resolution; j++) {
-                Color[][] subImagePixelArray = new Color[subImageHeight][subImageWidth];
-                for (int x = 0; x < subImageHeight; x++) {
-                    for (int y = 0; y < subImageWidth; y++) {
-                        subImagePixelArray[x][y] = image.getPixel(i * subImageWidth + y, j * subImageHeight + x);
-                    }
-                }
-                subImages.add(new ModifiedImage(subImagePixelArray, subImageWidth, subImageHeight));
+                addSubImage(subImageHeight, subImageWidth, i, j, subImages);
             }
         }
         return subImages;
+    }
+
+    private void addSubImage(int subImageHeight, int subImageWidth, int i, int j, LinkedList<ModifiedImage> subImages) {
+        Color[][] subImagePixelArray = new Color[subImageHeight][subImageWidth];
+        for (int x = 0; x < subImageHeight; x++) {
+            for (int y = 0; y < subImageWidth; y++) {
+                subImagePixelArray[x][y] = image.getPixel(i * subImageWidth + y, j * subImageHeight + x);
+            }
+        }
+        subImages.add(new ModifiedImage(subImagePixelArray, subImageWidth, subImageHeight));
     }
 
     public void addPadding() {
@@ -41,6 +57,9 @@ public class ModifiedImage {
         int newWidth = nextPowerOfTwo(image.getWidth());
         int paddingHeight = newHeight - image.getHeight();
         int paddingWidth = newWidth - image.getWidth();
+        if (paddingHeight == 0 && paddingWidth == 0) {
+            return;
+        }
         Color[][] newPixelArray = new Color[newHeight][newWidth];
         // Put white pixels on the new padding symmetrically around the image.
         for (int x = 0; x < newHeight; x++) {
@@ -68,7 +87,7 @@ public class ModifiedImage {
         return power;
     }
 
-    private double getBrightness(){
+    public double getBrightness(){
         double totalBrightness = 0;
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
