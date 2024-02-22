@@ -11,6 +11,7 @@ public class AsciiArtAlgorithm {
     private final ModifiedImage image;
     private final int width;
     private final SubImgCharMatcher subImgCharMatcher;
+    private char[][] asciiArt = null;
 
     public AsciiArtAlgorithm(ModifiedImage image, int width, SubImgCharMatcher subImgCharMatcher) {
         this.image = image;
@@ -19,6 +20,9 @@ public class AsciiArtAlgorithm {
     }
 
     public char[][] run(){
+        if (asciiArt != null) {
+            return asciiArt;
+        }
         int height = image.getHeight() * width / image.getWidth();
         char[][] asciiArt = new char[height][width];
         image.addPadding();
@@ -33,6 +37,7 @@ public class AsciiArtAlgorithm {
                 asciiArt[i][j] = asciiChar;
             }
         }
+        this.asciiArt = asciiArt;
         return asciiArt;
     }
 }
