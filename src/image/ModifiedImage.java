@@ -67,7 +67,7 @@ public class ModifiedImage {
                 if (inPadding(x, y, paddingHeight, paddingWidth)) {
                     newPixelArray[x][y] = Color.WHITE;
                 } else {
-                    newPixelArray[x][y] = image.getPixel(x + paddingHeight / 2, y + paddingWidth / 2);
+                    newPixelArray[x][y] = image.getPixel(x - paddingHeight / 2, y - paddingWidth / 2);
                 }
             }
         }
