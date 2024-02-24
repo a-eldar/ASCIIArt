@@ -1,7 +1,9 @@
 package ascii_art;
 
 import image.Image;
+import image.ModifiedImage;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 public class Shell {
@@ -9,14 +11,21 @@ public class Shell {
     private final String DEFAULT_IMAGE_PATH = "examples/cat.jpeg";
     private final HashSet<Character> charSet;
     private int resolution;
+    private OutputMethod outputMethod;
 
-    public Shell() {
+
+    private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
+
+    public Shell() throws IOException {
         this.charSet = new HashSet<>();
         char[] DEFAULT_CHAR_SET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         for (char c : DEFAULT_CHAR_SET) {
             charSet.add(c);
         }
         this.resolution = 128;
+        this.outputMethod = OutputMethod.CONSOLE; // Default output method
+        this.image = new ModifiedImage(DEFAULT_IMAGE_PATH); // need to check if the image is ok
+
     }
 
     public void run(){
@@ -43,6 +52,19 @@ public class Shell {
                         resolutionChange(command[1]);
                     } else {
                         System.err.println("Did not change resolution due to incorrect format.");
+                    }
+                    break;
+                case "image":
+                    if (command.length == 2) {
+                        try {
+                            changeImage(command[1]);
+                        } catch (IOException e) {
+                            System.err.println("Did not execute due to problem with image file.");
+                        }
+                    }
+                case "output":
+                    if (command.length == 2) {
+                        changeOutputMethod(command[1]);
                     }
                     break;
                 default:
@@ -187,14 +209,61 @@ public class Shell {
     }
 
     private void resolutionChange(String command) {
-        if (command.equals("up")){
-            this.resolution *= 2;
-            System.out.println("Resolution set to " + this.resolution);
-        } else if (command.equals("down")) {
-            this.resolution /= 2;
-            System.out.println("Resolution set to " + this.resolution);
-        } else {
-            System.err.println("Did not change resolution due to incorrect format.");
+        switch (command) {
+            case "up":
+                if (this.resolution * 2 <= getMaxResolution()) {
+                    this.resolution *= 2;
+                    System.out.println("Resolution set to " + this.resolution);
+                } else {
+                    System.err.println("Did not change resolution due to exceeding boundaries.");
+                }
+                break;
+            case "down":
+                if (this.resolution / 2 >= getMinResolution()) {
+                    this.resolution /= 2;
+                    System.out.println("Resolution set to " + this.resolution);
+                } else {
+                    System.err.println("Did not change resolution due to exceeding boundaries.");
+                }
+                break;
+            default:
+                System.err.println("Did not change resolution due to incorrect format.");
+                break;
         }
     }
+
+    private int getMaxResolution() {
+        // Calculate and return the maximum resolution based on image dimensions
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        return Math.max(1, imgWidth / imgHeight);
+    }
+
+    private int getMinResolution() {
+        return 1;
+    }
+
+    private void changeImage(String imagePath) throws IOException {
+        this.image = new ModifiedImage(imagePath);
+    }
+
+    private void changeOutputMethod(String method) {
+        switch (method.toLowerCase()) {
+            case "html":
+                this.outputMethod = OutputMethod.HTML;
+                System.out.println("Output method set to HTML.");
+                break;
+            case "console":
+                this.outputMethod = OutputMethod.CONSOLE;
+                System.out.println("Output method set to console.");
+                break;
+            default:
+                System.err.println("Invalid output method.");
+        }
+    }
+
+    private enum OutputMethod {
+        HTML, CONSOLE
+    }
+
 }
