@@ -2,6 +2,7 @@ package ascii_art;
 
 import image.Image;
 import image.ModifiedImage;
+import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.HashSet;
  */
 public class Shell {
 
-    private final String DEFAULT_IMAGE_PATH = "examples/cat.jpeg";
+    private final String DEFAULT_IMAGE_PATH = "cat.jpeg";
     private final HashSet<Character> charSet;
     private int resolution;
     private OutputMethod outputMethod;
@@ -74,8 +75,13 @@ public class Shell {
                         changeOutputMethod(command[1]);
                     }
                     break;
+
+//                case "asciiArt":
+//                    new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(charSet));
+//
+//                    break;
                 default:
-                    System.err.println("Invalid command.");
+                    System.err.println("Did not execute due to incorrect command");
                     break;
             }
 
