@@ -9,7 +9,7 @@ public class AsciiArt {
     public static void main(String[] args) {
         ModifiedImage image;
         try {
-            image = new ModifiedImage("examples/cat.jpeg");
+            image = new ModifiedImage("cat.jpeg");
         }
         catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -24,7 +24,7 @@ public class AsciiArt {
 
         AsciiArtAlgorithm algorithm = new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(asciiChars));
         char[][] asciiArt = algorithm.run();
-        HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("examples/cat.html", "Courier New");
+        HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("cat.html", "Courier New");
         htmlAsciiOutput.out(asciiArt);
     }
 }
