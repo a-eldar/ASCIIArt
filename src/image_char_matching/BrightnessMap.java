@@ -4,6 +4,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class BrightnessMap {
+    public static final char MIN_ASCII = ' ';
     private final TreeMap<Character, Node> charMap;
     private final TreeSet<Node> brightnessMap;
 
@@ -20,21 +21,24 @@ public class BrightnessMap {
     }
 
     public void add(char c, double brightness) {
-        Node matchNode = new Node(c, brightness, null);
-        matchNode.match = new Node(c, brightness, matchNode);
+        Node matchNode = new Node(c, brightness);
+        Node contains = charMap.get(c);
+        if (contains != null) {
+            brightnessMap.remove(contains);
+        }
         charMap.put(c, matchNode);
-        brightnessMap.add(matchNode.match);
+        brightnessMap.add(matchNode);
     }
 
     public void remove(char c) {
         Node matchNode = charMap.get(c);
-        brightnessMap.remove(matchNode.match);
+        brightnessMap.remove(matchNode);
         charMap.remove(c);
     }
 
     public char getCharByImageBrightness(double brightness) throws IllegalArgumentException {
-        Node ceiling = brightnessMap.ceiling(new Node(' ', brightness, null));
-        Node floor = brightnessMap.floor(new Node(' ', brightness, null));
+        Node ceiling = brightnessMap.ceiling(new Node(MIN_ASCII, brightness));
+        Node floor = brightnessMap.floor(new Node(MIN_ASCII, brightness));
         if (ceiling == null && floor == null) {
             throw new IllegalArgumentException("Brightness not found in map");
         } else if (ceiling == null) {
@@ -54,22 +58,17 @@ public class BrightnessMap {
         }
     }
 
-    public void getBrightness(char c) {
-        if (!charMap.containsKey(c)) {
-            throw new IllegalArgumentException("Character not found in map");
-        }
-        System.out.println(charMap.get(c).brightness);
+    public Double getBrightness(char c) {
+        Node node = charMap.get(c);
+        return node == null ? null : node.brightness;
     }
 
     private static class Node {
         private final char c;
         private final double brightness;
-        private Node match;
-
-        public Node(char c, double brightness, Node match) {
+        public Node(char c, double brightness) {
             this.c = c;
             this.brightness = brightness;
-            this.match = match;
         }
     }
 }
