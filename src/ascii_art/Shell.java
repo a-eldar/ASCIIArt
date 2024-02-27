@@ -6,6 +6,9 @@ import image.ModifiedImage;
 import java.io.IOException;
 import java.util.HashSet;
 
+/**
+ * This class is used to run the shell for the ASCII art program.
+ */
 public class Shell {
 
     private final String DEFAULT_IMAGE_PATH = "examples/cat.jpeg";
@@ -16,6 +19,10 @@ public class Shell {
 
     private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
 
+    /**
+     * Create a new Shell with the default image and character set.
+     * @throws IOException If there is a problem with the image file
+     */
     public Shell() throws IOException {
         this.charSet = new HashSet<>();
         char[] DEFAULT_CHAR_SET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};

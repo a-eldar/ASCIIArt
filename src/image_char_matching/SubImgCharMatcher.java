@@ -2,12 +2,20 @@ package image_char_matching;
 
 import java.util.*;
 
+/**
+ * This class is used to match a character from a charset to a given brightness.
+ */
 public class SubImgCharMatcher {
     private final HashMap<Character, Double> brightnessMap;
     private static final HashMap<Character, Double> CHAR_BRIGHTNESS = new HashMap<>();
     double maxBrightness;
     double minBrightness;
 
+    /**
+     * Create a new SubImgCharMatcher with the given charset.
+     * @param charset The charset to use
+     * @throws IllegalArgumentException If the charset is empty
+     */
     public SubImgCharMatcher(char[] charset) throws IllegalArgumentException {
         if (charset.length == 0) {
             throw new IllegalArgumentException("Charset must contain at least one character");
@@ -30,7 +38,8 @@ public class SubImgCharMatcher {
 
     /**
      * Get the character from the charset that best matches the given brightness.
-     * If there are multiple characters with the same brightness difference, return the one with the smallest ASCII value.
+     * If there are multiple characters with the same brightness difference, return the one with the
+     * smallest ASCII value.
      * @param brightness The brightness to match
      * @return The character from the charset that best matches the given brightness
      */
@@ -52,6 +61,10 @@ public class SubImgCharMatcher {
         return bestPossibleChar;
     }
 
+    /**
+     * Add a character to the charset.
+     * @param c The character to add
+     */
     public void addChar(char c) {
         brightnessMap.put(c, getBrightness(c));
         boolean changed = false;
@@ -71,6 +84,10 @@ public class SubImgCharMatcher {
         }
     }
 
+    /**
+     * Remove a character from the charset.
+     * @param c The character to remove
+     */
     public void removeChar(char c) {
         if (brightnessMap.get(c) != maxBrightness && brightnessMap.get(c) != minBrightness) {
             brightnessMap.remove(c);
