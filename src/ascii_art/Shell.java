@@ -226,7 +226,7 @@ public class Shell {
             case "up":
                 if (this.resolution * 2 <= getMaxResolution()) {
                     this.resolution *= 2;
-                    System.out.println("Resolution set to " + this.resolution);
+                    System.out.println("Resolution set to " + this.resolution + ".");
                 } else {
                     System.err.println("Did not change resolution due to exceeding boundaries.");
                 }
@@ -234,7 +234,7 @@ public class Shell {
             case "down":
                 if (this.resolution / 2 >= getMinResolution()) {
                     this.resolution /= 2;
-                    System.out.println("Resolution set to " + this.resolution);
+                    System.out.println("Resolution set to " + this.resolution + ".");
                 } else {
                     System.err.println("Did not change resolution due to exceeding boundaries.");
                 }
@@ -257,21 +257,24 @@ public class Shell {
     }
 
     private void changeImage(String imagePath) throws IOException {
-        this.image = new ModifiedImage(imagePath);
+        try {
+            this.image = new ModifiedImage(imagePath);
+        } catch (IOException e) {
+            System.err.println("Did not change image due to problem with image file.");
+        }
+
     }
 
     private void changeOutputMethod(String method) {
         switch (method.toLowerCase()) {
             case "html":
                 this.outputMethod = OutputMethod.HTML;
-                System.out.println("Output method set to HTML.");
                 break;
             case "console":
                 this.outputMethod = OutputMethod.CONSOLE;
-                System.out.println("Output method set to console.");
                 break;
             default:
-                System.err.println("Invalid output method.");
+                System.err.println("Did not change output method due to incorrect format.");
         }
     }
 
