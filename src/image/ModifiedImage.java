@@ -12,6 +12,7 @@ public class ModifiedImage {
     // The maximum brightness value for a pixel.
     public static final int RGB_MAX_BRIGHTNESS = 255;
     private Image image;
+    private Double brightness = null;
 
     /**
      * Create a new ModifiedImage from the given filename.
@@ -58,11 +59,11 @@ public class ModifiedImage {
 
     public LinkedList<ModifiedImage> getSubImages(int subImageSize) {
         LinkedList<ModifiedImage> subImages = new LinkedList<>();
-        int subImageWidth = image.getWidth() / subImageSize;
-        int subImageHeight = image.getHeight() / subImageSize;
+        int numSubImagesHorizontally = image.getWidth() / subImageSize;
+        int numSubImagesVertically = image.getHeight() / subImageSize;
 
-        for (int i = 0; i < subImageHeight; i++) {
-            for (int j = 0; j < subImageWidth; j++) {
+        for (int i = 0; i < numSubImagesVertically; i++) {
+            for (int j = 0; j < numSubImagesHorizontally; j++) {
                 addSubImage(subImageSize, i, j, subImages);
             }
         }
@@ -122,6 +123,9 @@ public class ModifiedImage {
      * @return The brightness of the image.
      */
     public double getBrightness(){
+        if (brightness != null) {
+            return brightness;
+        }
         double totalBrightness = 0;
         for (int x = 0; x < image.getHeight(); x++) {
             for (int y = 0; y < image.getWidth(); y++) {
@@ -129,6 +133,7 @@ public class ModifiedImage {
             }
         }
         totalBrightness /= image.getWidth() * image.getHeight() * RGB_MAX_BRIGHTNESS;
+        brightness = totalBrightness;
         return totalBrightness;
     }
 

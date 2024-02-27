@@ -13,6 +13,11 @@ public class AsciiArtAlgorithm {
     private final SubImgCharMatcher subImgCharMatcher;
     private char[][] asciiArt = null;
 
+    /** Create a new AsciiArtAlgorithm with the given image, width, and character matcher.
+     * @param image The image to create the ASCII art from.
+     * @param width The width of the ASCII art.
+     * @param subImgCharMatcher The character matcher to use.
+     */
     public AsciiArtAlgorithm(ModifiedImage image, int width, SubImgCharMatcher subImgCharMatcher) {
         this.image = image;
         this.width = width;

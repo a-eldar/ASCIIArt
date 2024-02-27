@@ -1,39 +1,38 @@
 package ascii_art;
 
-import image.Image;
+import ascii_output.ConsoleAsciiOutput;
+import ascii_output.HtmlAsciiOutput;
 import image.ModifiedImage;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * This class is used to run the shell for the ASCII art program.
  */
 public class Shell {
 
-    private final String DEFAULT_IMAGE_PATH = "cat.jpeg";
-    private final HashSet<Character> charSet;
+    private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
+    private final TreeSet<Character> charSet;
     private int resolution;
     private OutputMethod outputMethod;
-
+    private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    private final static int DEFAULT_RESOLUTION = 128;
 
     private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
+    private String imageFilePath = DEFAULT_IMAGE_PATH;
 
     /**
      * Create a new Shell with the default image and character set.
      * @throws IOException If there is a problem with the image file
      */
     public Shell() throws IOException {
-        this.charSet = new HashSet<>();
-        char[] DEFAULT_CHAR_SET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        for (char c : DEFAULT_CHAR_SET) {
-            charSet.add(c);
-        }
-        this.resolution = 128;
+        this.charSet = new TreeSet<>();
+        charSet.addAll(DEFAULT_CHAR_SET);
+        this.resolution = DEFAULT_RESOLUTION;
         this.outputMethod = OutputMethod.CONSOLE; // Default output method
-        this.image = new ModifiedImage(DEFAULT_IMAGE_PATH); // need to check if the image is ok
-
     }
 
     public void run(){
@@ -41,7 +40,7 @@ public class Shell {
     }
 
     private void getUserInput() {
-        System.out.println(">>>");
+        System.out.print(MessageConstants.USER_INPUT_PROMPT);
         String userInput = KeyboardInput.readLine();
         while (!userInput.equals("exit")){
             String[] command = userInput.split(" ");
@@ -59,40 +58,55 @@ public class Shell {
                     if (command.length == 2) {
                         resolutionChange(command[1]);
                     } else {
-                        System.err.println("Did not change resolution due to incorrect format.");
+                        System.out.println(MessageConstants.RESOLUTION_CHANGE_ERROR);
                     }
                     break;
                 case "image":
-                    if (command.length == 2) {
-                        try {
-                            changeImage(command[1]);
-                        } catch (IOException e) {
-                            System.err.println("Did not execute due to problem with image file.");
-                        }
+                    if (command.length != 2) {
+                        System.out.println(MessageConstants.IMAGE_CHANGE_ERROR);
+                        break;
                     }
-                case "output":
-                    if (command.length == 2) {
-                        changeOutputMethod(command[1]);
+                    try {
+                        changeImage(command[1]);
+                    } catch (IOException e) {
+                        System.out.println(MessageConstants.IMAGE_CHANGE_ERROR);
                     }
                     break;
+                case "output":
+                    if (command.length != 2) {
+                        System.out.println(MessageConstants.OUTPUT_METHOD_ERROR);
+                        break;
+                    }
+                    changeOutputMethod(command[1]);
+                    break;
 
-//                case "asciiArt":
-//                    new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(charSet));
-//
-//                    break;
+                case "asciiArt":
+                    AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(charSet));
+                    switch (outputMethod) {
+                        case HTML:
+                            String path = imageFilePath.substring(0, imageFilePath.lastIndexOf('.'));
+                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path + ".html", "Courier New");
+                            htmlAsciiOutput.out(algo.run());
+                            break;
+                        case CONSOLE:
+                            ConsoleAsciiOutput consoleAsciiOutput = new ConsoleAsciiOutput();
+                            consoleAsciiOutput.out(algo.run());
+                            break;
+                    }
+                    break;
                 default:
-                    System.err.println("Did not execute due to incorrect command");
+                    System.out.println(MessageConstants.INCORRECT_COMMAND_ERROR);
                     break;
             }
 
-            System.out.println(">>>");
+            System.out.print(MessageConstants.USER_INPUT_PROMPT);
             userInput = KeyboardInput.readLine();
         }
     }
 
     private void handleAddCommand(String[] command) {
         if (command.length != 2) {
-            System.err.println("Did not add due to incorrect format.");
+            System.out.println(MessageConstants.ADD_CHAR_ERROR);
             return;
         }
         String option = command[1];
@@ -109,12 +123,12 @@ public class Shell {
                     if (isValidAsciiChar(singleChar)) {
                         addCharToCharset(singleChar);
                     } else {
-                        System.err.println("Did not add due to invalid character.");
+                        System.out.println(MessageConstants.INVALID_CHAR_ADD_ERROR);
                     }
                 } else if (option.length() == 3 && option.charAt(1) == '-') {
                     addCharsInRange(option);
                 } else {
-                    System.err.println("Did not add due to incorrect format.");
+                    System.out.println(MessageConstants.ADD_CHAR_ERROR);
                 }
                 break;
         }
@@ -122,7 +136,7 @@ public class Shell {
 
     private void handleRemoveCommand(String[] command) {
         if (command.length != 2) {
-            System.err.println("Did not remove due to incorrect format.");
+            System.out.println(MessageConstants.REMOVE_CHAR_ERROR);
             return;
         }
         String option = command[1];
@@ -139,12 +153,12 @@ public class Shell {
                     if (isValidAsciiChar(singleChar)) {
                         removeCharToCharset(singleChar);
                     } else {
-                        System.err.println("Did not remove due to invalid character.");
+                        System.out.println(MessageConstants.INVALID_CHAR_REMOVE_ERROR);
                     }
                 } else if (option.length() == 3 && option.charAt(1) == '-') {
                     removeCharsInRange(option);
                 } else {
-                    System.err.println("Did not remove due to incorrect format.");
+                    System.out.println(MessageConstants.REMOVE_CHAR_ERROR);
                 }
                 break;
         }
@@ -226,41 +240,44 @@ public class Shell {
             case "up":
                 if (this.resolution * 2 <= getMaxResolution()) {
                     this.resolution *= 2;
-                    System.out.println("Resolution set to " + this.resolution + ".");
+                    MessageConstants.printResolutionSetMessage(this.resolution);
                 } else {
-                    System.err.println("Did not change resolution due to exceeding boundaries.");
+                    System.out.println(MessageConstants.RESOLUTION_BOUNDS_ERROR);
                 }
                 break;
             case "down":
                 if (this.resolution / 2 >= getMinResolution()) {
                     this.resolution /= 2;
-                    System.out.println("Resolution set to " + this.resolution + ".");
+                    MessageConstants.printResolutionSetMessage(this.resolution);
                 } else {
-                    System.err.println("Did not change resolution due to exceeding boundaries.");
+                    System.out.println(MessageConstants.RESOLUTION_BOUNDS_ERROR);
                 }
                 break;
             default:
-                System.err.println("Did not change resolution due to incorrect format.");
+                System.out.println(MessageConstants.RESOLUTION_CHANGE_ERROR);
                 break;
         }
     }
 
+
+
     private int getMaxResolution() {
-        // Calculate and return the maximum resolution based on image dimensions
+        return image.getWidth();
+    }
+
+    private int getMinResolution() {
+        // Calculate and return the minimum resolution based on image dimensions
         int imgWidth = image.getWidth();
         int imgHeight = image.getHeight();
         return Math.max(1, imgWidth / imgHeight);
     }
 
-    private int getMinResolution() {
-        return 1;
-    }
-
     private void changeImage(String imagePath) throws IOException {
         try {
             this.image = new ModifiedImage(imagePath);
+            this.imageFilePath = imagePath;
         } catch (IOException e) {
-            System.err.println("Did not change image due to problem with image file.");
+            System.out.println(MessageConstants.IMAGE_CHANGE_ERROR);
         }
 
     }
@@ -274,7 +291,7 @@ public class Shell {
                 this.outputMethod = OutputMethod.CONSOLE;
                 break;
             default:
-                System.err.println("Did not change output method due to incorrect format.");
+                System.out.println(MessageConstants.OUTPUT_METHOD_ERROR);
         }
     }
 

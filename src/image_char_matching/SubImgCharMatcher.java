@@ -16,8 +16,8 @@ public class SubImgCharMatcher {
      * @param charset The charset to use
      * @throws IllegalArgumentException If the charset is empty
      */
-    public SubImgCharMatcher(char[] charset) throws IllegalArgumentException {
-        if (charset.length == 0) {
+    public SubImgCharMatcher(Collection<Character> charset) throws IllegalArgumentException {
+        if (charset.isEmpty()) {
             throw new IllegalArgumentException("Charset must contain at least one character");
         }
         this.brightnessMap = new HashMap<>();
