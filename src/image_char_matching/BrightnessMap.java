@@ -39,6 +39,10 @@ public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character
         charSet.add(c);
     }
 
+    /**
+     * Remove a character from the map.
+     * @param c The character to remove
+     */
     public void remove(char c) {
         Node matchNode = charMap.get(c);
         brightnessSet.remove(matchNode);
