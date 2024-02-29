@@ -300,4 +300,15 @@ public class Shell {
         HTML, CONSOLE
     }
 
+
+    /**
+     * Main method to run the shell.
+     * @param args Command line arguments
+     * @throws IOException If there is a problem with the image file
+     */
+    public static void main(String[] args) throws IOException {
+        Shell shell = new Shell();
+        shell.run();
+    }
+
 }
