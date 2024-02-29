@@ -11,6 +11,7 @@ public class MessageConstants {
     public static final String INVALID_CHAR_REMOVE_ERROR = "Did not remove due to invalid character.";
     public static final String RESOLUTION_BOUNDS_ERROR = "Did not change resolution due to exceeding boundaries.";
     public static final String OUTPUT_METHOD_ERROR = "Did not change output method due to incorrect format.";
+    public static final String CHAR_SET_EMPTY_ERROR = "Brightness not found in map";
     public static void printResolutionSetMessage(int resolution) {
         System.out.println("Resolution set to " + resolution + ".");
     }
