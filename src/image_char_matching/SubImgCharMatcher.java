@@ -18,8 +18,8 @@ public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double
      * @param charset The charset to use
      * @throws IllegalArgumentException If the charset is empty
      */
-    public SubImgCharMatcher(Collection<Character> charset) throws IllegalArgumentException {
-        if (charset.isEmpty()) {
+    public SubImgCharMatcher(char[] charset) throws IllegalArgumentException {
+        if (charset.length == 0) {
             throw new IllegalArgumentException("Charset must contain at least one character");
         }
 
