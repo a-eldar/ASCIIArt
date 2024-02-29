@@ -6,8 +6,8 @@ import image.ModifiedImage;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * This class is used to run the shell for the ASCII art program.
@@ -15,7 +15,12 @@ import java.util.TreeSet;
 public class Shell {
 
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
-    private final TreeSet<Character> charSet;
+    public static final String HTML_FONT = "Courier New";
+    public static final String HTML_EXTENSION = ".html";
+    public static final char EXTENSION_START = '.';
+    public static final char MIN_ASCII = ' ';
+    public static final char MAX_ASCII = '~';
+    private final SubImgCharMatcher charMatcher;
     private int resolution;
     private OutputMethod outputMethod;
     private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
@@ -29,8 +34,7 @@ public class Shell {
      * @throws IOException If there is a problem with the image file
      */
     public Shell() throws IOException {
-        this.charSet = new TreeSet<>();
-        charSet.addAll(DEFAULT_CHAR_SET);
+        this.charMatcher = new SubImgCharMatcher(DEFAULT_CHAR_SET);
         this.resolution = DEFAULT_RESOLUTION;
         this.outputMethod = OutputMethod.CONSOLE; // Default output method
     }
@@ -81,11 +85,11 @@ public class Shell {
                     break;
 
                 case "asciiArt":
-                    AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, new SubImgCharMatcher(charSet));
+                    AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, charMatcher);
                     switch (outputMethod) {
                         case HTML:
-                            String path = imageFilePath.substring(0, imageFilePath.lastIndexOf('.'));
-                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path + ".html", "Courier New");
+                            String path = imageFilePath.substring(0, imageFilePath.lastIndexOf(EXTENSION_START));
+                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path + HTML_EXTENSION, HTML_FONT);
                             htmlAsciiOutput.out(algo.run());
                             break;
                         case CONSOLE:
@@ -112,16 +116,18 @@ public class Shell {
         String option = command[1];
         switch (option) {
             case "all":
-                addAllChars();
+                for (char c = MIN_ASCII; c <= MAX_ASCII; c++) {
+                    addCharToCharMatcher(c);
+                }
                 break;
             case "space":
-                addSpaceChar();
+                addCharToCharMatcher(' ');
                 break;
             default:
                 if (option.length() == 1) {
                     char singleChar = option.charAt(0);
                     if (isValidAsciiChar(singleChar)) {
-                        addCharToCharset(singleChar);
+                        addCharToCharMatcher(singleChar);
                     } else {
                         System.out.println(MessageConstants.INVALID_CHAR_ADD_ERROR);
                     }
@@ -142,16 +148,16 @@ public class Shell {
         String option = command[1];
         switch (option) {
             case "all":
-                removeAllChars();
+                charMatcher.clearChars();
                 break;
             case "space":
-                removeSpaceChar();
+                removeCharFromCharMatcher(' ');
                 break;
             default:
                 if (option.length() == 1) {
                     char singleChar = option.charAt(0);
                     if (isValidAsciiChar(singleChar)) {
-                        removeCharToCharset(singleChar);
+                        removeCharFromCharMatcher(singleChar);
                     } else {
                         System.out.println(MessageConstants.INVALID_CHAR_REMOVE_ERROR);
                     }
@@ -165,8 +171,8 @@ public class Shell {
     }
 
     private void printCharacterSet() {
-        for (char c : charSet) {
-            System.out.print(c + " ");
+        for (AbstractMap.SimpleEntry<Character, Double> entry : charMatcher) {
+            System.out.print(entry.getKey() + " ");
         }
         System.out.println();
     }
@@ -183,7 +189,7 @@ public class Shell {
 
         for (char c = start; c <= end; c++) {
             if (isValidAsciiChar(c)) {
-                addCharToCharset(c);
+                addCharToCharMatcher(c);
             }
         }
     }
@@ -200,7 +206,7 @@ public class Shell {
 
         for (char c = start; c <= end; c++) {
             if (isValidAsciiChar(c)) {
-                removeCharToCharset(c);
+                removeCharFromCharMatcher(c);
             }
         }
     }
@@ -209,30 +215,12 @@ public class Shell {
         return c >= ' ' && c <= '~';
     }
 
-    private void addAllChars() {
-        for (char c = ' '; c <= '~'; c++) {
-            addCharToCharset(c);
-        }
+    private void addCharToCharMatcher(char c) {
+        charMatcher.addChar(c);
     }
 
-    private void removeAllChars() {
-        charSet.clear();
-    }
-
-    private void addSpaceChar() {
-        addCharToCharset(' ');
-    }
-
-    private void removeSpaceChar() {
-        removeCharToCharset(' ');
-    }
-
-    private void addCharToCharset(char c) {
-        charSet.add(c);
-    }
-
-    private void removeCharToCharset(char c) {
-        charSet.remove(c);
+    private void removeCharFromCharMatcher(char c) {
+        charMatcher.removeChar(c);
     }
 
     private void resolutionChange(String command) {

@@ -5,8 +5,9 @@ import java.util.AbstractMap.SimpleEntry;
 
 /**
  * This class is used to match a character from a charset to a given brightness.
+ * @author Eldar Amar & Ofek Kelly
  */
-public class SubImgCharMatcher {
+public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double>>{
     private final BrightnessMap brightnessMap = new BrightnessMap();
     private static final HashMap<Character, Double> CHAR_BRIGHTNESS = new HashMap<>();
     double maxBrightness;
@@ -37,10 +38,11 @@ public class SubImgCharMatcher {
      * If there are multiple characters with the same brightness difference, return the one with the
      * smallest ASCII value.
      * @param brightness The brightness to match
+     * @throws IllegalArgumentException If the map is empty
      * @return The character from the charset that best matches the given brightness
      */
     public char getCharByImageBrightness(double brightness) throws IllegalArgumentException {
-        return brightnessMap.getCharByImageBrightness(brightness);
+        return brightnessMap.getCharByBrightness(brightness);
     }
 
     /**
@@ -72,6 +74,12 @@ public class SubImgCharMatcher {
             updateMaxMinBrightness(getBrightness(entry.getKey()));
         }
         stretchCharBrightnessLinearly();
+    }
+
+    public void clearChars() {
+        brightnessMap.clear();
+        maxBrightness = Double.MIN_VALUE;
+        minBrightness = Double.MAX_VALUE;
     }
 
     private boolean updateMaxMinBrightness(double brightness) {
@@ -108,14 +116,25 @@ public class SubImgCharMatcher {
     }
 
     private void stretchCharBrightnessLinearly() {
+        BrightnessMap newMap = new BrightnessMap();
         for (SimpleEntry<Character, Double> entry : brightnessMap) {
-            stretchCharBrightnessLinearly(entry.getKey());
+            stretchCharBrightnessLinearly(newMap, entry.getKey());
         }
+        brightnessMap.copy(newMap);
     }
 
     private void stretchCharBrightnessLinearly(char c) {
         double normalizedBrightness = (getBrightness(c) - minBrightness) / (maxBrightness - minBrightness);
-        brightnessMap.remove(c);
         brightnessMap.add(c, normalizedBrightness);
+    }
+
+    private void stretchCharBrightnessLinearly(BrightnessMap map, char c) {
+        double normalizedBrightness = (getBrightness(c) - minBrightness) / (maxBrightness - minBrightness);
+        map.add(c, normalizedBrightness);
+    }
+
+    @Override
+    public Iterator<SimpleEntry<Character, Double>> iterator() {
+        return brightnessMap.iterator();
     }
 }
