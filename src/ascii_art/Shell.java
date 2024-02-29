@@ -31,7 +31,8 @@ public class Shell {
     private final SubImgCharMatcher charMatcher;
     private int resolution;
     private OutputMethod outputMethod;
-    private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3',
+            '4', '5', '6', '7', '8', '9');
     private final static int DEFAULT_RESOLUTION = 128;
     private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
     private String imageFilePath = DEFAULT_IMAGE_PATH;
@@ -98,8 +99,10 @@ public class Shell {
                     AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, charMatcher);
                     switch (outputMethod) {
                         case HTML:
-                            String path = imageFilePath.substring(0, imageFilePath.lastIndexOf(EXTENSION_START));
-                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path + HTML_EXTENSION, HTML_FONT);
+                            String path = imageFilePath.substring(0,
+                                    imageFilePath.lastIndexOf(EXTENSION_START));
+                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path +
+                                    HTML_EXTENSION, HTML_FONT);
                             htmlAsciiOutput.out(algo.run());
                             break;
                         case CONSOLE:

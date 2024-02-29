@@ -31,7 +31,8 @@ public class MessageConstants {
     public static final String INVALID_CHAR_REMOVE_ERROR = "Did not remove due to invalid character.";
 
     /** Error message when failed to change resolution due to exceeding boundaries */
-    public static final String RESOLUTION_BOUNDS_ERROR = "Did not change resolution due to exceeding boundaries.";
+    public static final String RESOLUTION_BOUNDS_ERROR = "Did not change resolution due to exceeding " +
+            "boundaries.";
 
     /** Error message when failed to change output method due to incorrect format */
     public static final String OUTPUT_METHOD_ERROR = "Did not change output method due to incorrect format.";

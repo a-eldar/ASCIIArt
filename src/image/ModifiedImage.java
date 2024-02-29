@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * This class is used to represent an image and perform operations on it.
  */
 public class ModifiedImage {
-    // The maximum brightness value for a pixel.
+    /** The maximum brightness of an RGB pixel.*/
     public static final int RGB_MAX_BRIGHTNESS = 255;
     private Image image;
     private Double brightness = null;

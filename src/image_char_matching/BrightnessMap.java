@@ -5,11 +5,14 @@ import ascii_art.Shell;
 import java.util.*;
 
 /**
- * A map of characters to brightnesses, with the ability to get the character that best matches a given brightness.
- * The map is iterable, and the iterator returns the characters and their brightnesses in ascending order of characters.
+ * A map of characters to brightnesses, with the ability to get the character that best matches a
+ * given brightness.
+ * The map is iterable, and the iterator returns the characters and their brightnesses in ascending order
+ * of characters.
  * @author Eldar Amar
  */
 public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character, Double>> {
+    /*** The minimum ASCII value.*/
     public static final char MIN_ASCII = Shell.MIN_ASCII;
     private final HashMap<Character, Node> charMap;
     private final TreeSet<Node> brightnessSet;
