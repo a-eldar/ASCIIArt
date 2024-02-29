@@ -121,6 +121,11 @@ public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character
         return ceiling.c < floor.c ? ceiling.c : floor.c;
     }
 
+    /**
+     * Get the brightness of the given character.
+     * @param c The character to get the brightness of
+     * @return The brightness of the given character, or null if the character is not in the map
+     */
     public Double getBrightness(char c) {
         Node node = charMap.get(c);
         return node == null ? null : node.brightness;
@@ -135,6 +140,10 @@ public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character
         }
     }
 
+    /**
+     * Get the number of characters in the map.
+     * @return The number of characters in the map
+     */
     @Override
     public Iterator<AbstractMap.SimpleEntry<Character, Double>> iterator() {
         return new BrightnessIterator();
@@ -142,12 +151,23 @@ public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character
 
     private class BrightnessIterator implements Iterator<AbstractMap.SimpleEntry<Character, Double>> {
         private final Iterator<Character> iterator;
+        /**
+         * Create a new BrightnessIterator.
+         */
         public BrightnessIterator() {
             this.iterator = charSet.iterator();
         }
+        /**
+         * Check if there is a next character in the map.
+         * @return True if there is a next character in the map, false otherwise
+         */
         public boolean hasNext() {
             return iterator.hasNext();
         }
+        /**
+         * Get the next character and its brightness in the map.
+         * @return The next character and its brightness in the map
+         */
         public AbstractMap.SimpleEntry<Character, Double> next() {
             char c = iterator.next();
             return new AbstractMap.SimpleEntry<>(c, charMap.get(c).brightness);

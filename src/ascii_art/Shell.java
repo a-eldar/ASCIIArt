@@ -16,18 +16,23 @@ import java.util.List;
  */
 public class Shell {
 
+    /** Default image file path */
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
+    /** Default font for HTML output */
     public static final String HTML_FONT = "Courier New";
+    /** HTML file extension */
     public static final String HTML_EXTENSION = ".html";
+    /** Character to start file extension */
     public static final char EXTENSION_START = '.';
+    /** Minimum ASCII character */
     public static final char MIN_ASCII = ' ';
+    /** Maximum ASCII character */
     public static final char MAX_ASCII = '~';
     private final SubImgCharMatcher charMatcher;
     private int resolution;
     private OutputMethod outputMethod;
     private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private final static int DEFAULT_RESOLUTION = 128;
-
     private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
     private String imageFilePath = DEFAULT_IMAGE_PATH;
 
