@@ -4,12 +4,20 @@ import ascii_art.MessageConstants;
 import ascii_art.Shell;
 import java.util.*;
 
+/**
+ * A map of characters to brightnesses, with the ability to get the character that best matches a given brightness.
+ * The map is iterable, and the iterator returns the characters and their brightnesses in ascending order of characters.
+ * @author Eldar Amar
+ */
 public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character, Double>> {
     public static final char MIN_ASCII = Shell.MIN_ASCII;
     private final HashMap<Character, Node> charMap;
     private final TreeSet<Node> brightnessSet;
     private final TreeSet<Character> charSet;
 
+    /**
+     * Create a new BrightnessMap.
+     */
     public BrightnessMap() {
         this.charMap = new HashMap<>();
         this.brightnessSet = new TreeSet<>(
@@ -93,11 +101,15 @@ public class BrightnessMap implements Iterable<AbstractMap.SimpleEntry<Character
             throw new IllegalArgumentException(MessageConstants.CHAR_SET_EMPTY_EXCEPTION);
         }
         if (ceiling == null) {
+            floor = brightnessSet.ceiling(new Node(MIN_ASCII, floor.brightness));
+            assert floor != null; // Will never happen
             return floor.c;
         }
         if (floor == null) {
             return ceiling.c;
         }
+        floor = brightnessSet.ceiling(new Node(MIN_ASCII, floor.brightness));
+        assert floor != null; // Will never happen
         double ceilingDiff = ceiling.brightness - brightness;
         double floorDiff = brightness - floor.brightness;
         if (ceilingDiff < floorDiff) {

@@ -76,6 +76,9 @@ public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double
         stretchCharBrightnessLinearly();
     }
 
+    /**
+     * Remove all the characters from the charset.
+     */
     public void clearChars() {
         brightnessMap.clear();
         maxBrightness = Double.MIN_VALUE;
@@ -133,8 +136,23 @@ public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double
         map.add(c, normalizedBrightness);
     }
 
+    /**
+     * Get the iterator for the map.
+     * @return iterator of SimpleEntry<Character, Double>
+     */
     @Override
     public Iterator<SimpleEntry<Character, Double>> iterator() {
         return brightnessMap.iterator();
+    }
+
+    // TO REMOVE
+
+    /**
+     * Get the brightness of a character.
+     * @param c The character to get the brightness of
+     * @return The brightness of the character
+     */
+    public double getCharBrightness(char c) {
+        return brightnessMap.getBrightness(c);
     }
 }

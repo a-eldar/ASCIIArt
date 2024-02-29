@@ -6,6 +6,10 @@ import image_char_matching.SubImgCharMatcher;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * This class is used to create the ASCII art from an image using the given character matcher and width.
+ * @author Eldar Amar & Ofek Kelly
+ */
 public class AsciiArtAlgorithm {
 
     private final ModifiedImage image;
@@ -24,6 +28,10 @@ public class AsciiArtAlgorithm {
         this.subImgCharMatcher = subImgCharMatcher;
     }
 
+    /**
+     * Run the algorithm and return the ASCII art.
+     * @return The ASCII art.
+     */
     public char[][] run(){
         if (asciiArt != null) {
             return asciiArt;

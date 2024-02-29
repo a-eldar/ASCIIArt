@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * This class is used to run the shell for the ASCII art program.
+ * It handles user input and runs the algorithm to create the ASCII art.
+ * @author Eldar Amar & Ofek Kelly
  */
 public class Shell {
 
@@ -39,6 +41,9 @@ public class Shell {
         this.outputMethod = OutputMethod.CONSOLE; // Default output method
     }
 
+    /**
+     * Start the shell.
+     */
     public void run(){
         getUserInput();
     }

@@ -57,6 +57,11 @@ public class ModifiedImage {
         return image.getHeight();
     }
 
+    /**
+     * Get a list of sub-images of the image, each of size subImageSize x subImageSize.
+     * @param subImageSize The size of each sub-image.
+     * @return A list of sub-images of the image.
+     */
     public LinkedList<ModifiedImage> getSubImages(int subImageSize) {
         LinkedList<ModifiedImage> subImages = new LinkedList<>();
         int numSubImagesHorizontally = image.getWidth() / subImageSize;
