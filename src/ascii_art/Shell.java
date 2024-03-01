@@ -22,6 +22,7 @@ public class Shell {
     public static final char EXTENSION_START = '.';
     public static final char MIN_ASCII = ' ';
     public static final char MAX_ASCII = '~';
+    public static final char RANGE_SEPARATOR = '-';
     private final SubImgCharMatcher charMatcher;
     private int resolution;
     private OutputMethod outputMethod;
@@ -136,8 +137,8 @@ public class Shell {
                     } else {
                         System.out.println(MessageConstants.INVALID_CHAR_ADD_ERROR);
                     }
-                } else if (option.length() == 3 && option.charAt(1) == '-') {
-                    addCharsInRange(option);
+                } else if (option.length() == 3 && option.charAt(1) == RANGE_SEPARATOR) {
+                    applyToRange(option, this::addCharToCharMatcher);
                 } else {
                     System.out.println(MessageConstants.ADD_CHAR_ERROR);
                 }
@@ -166,8 +167,8 @@ public class Shell {
                     } else {
                         System.out.println(MessageConstants.INVALID_CHAR_REMOVE_ERROR);
                     }
-                } else if (option.length() == 3 && option.charAt(1) == '-') {
-                    removeCharsInRange(option);
+                } else if (option.length() == 3 && option.charAt(1) == RANGE_SEPARATOR) {
+                    applyToRange(option, this::removeCharFromCharMatcher);
                 } else {
                     System.out.println(MessageConstants.REMOVE_CHAR_ERROR);
                 }
@@ -182,7 +183,13 @@ public class Shell {
         System.out.println();
     }
 
-    private void addCharsInRange(String range) {
+    /**
+     * Apply the given applier to all characters in the given range.
+     * @param range The range of characters to apply the applier to.
+     *              Must be in the format "a-b" where a and b are characters.
+     * @param applier The applier to apply to the characters in the range.
+     */
+    private void applyToRange(String range, CharApplier applier) {
         char start = range.charAt(0);
         char end = range.charAt(2);
 
@@ -194,30 +201,13 @@ public class Shell {
 
         for (char c = start; c <= end; c++) {
             if (isValidAsciiChar(c)) {
-                addCharToCharMatcher(c);
-            }
-        }
-    }
-
-    private void removeCharsInRange(String range) {
-        char start = range.charAt(0);
-        char end = range.charAt(2);
-
-        if (start > end) {
-            char temp = start;
-            start = end;
-            end = temp;
-        }
-
-        for (char c = start; c <= end; c++) {
-            if (isValidAsciiChar(c)) {
-                removeCharFromCharMatcher(c);
+                applier.apply(c);
             }
         }
     }
 
     private boolean isValidAsciiChar(char c) {
-        return c >= ' ' && c <= '~';
+        return c >= MIN_ASCII && c <= MAX_ASCII;
     }
 
     private void addCharToCharMatcher(char c) {
@@ -290,6 +280,10 @@ public class Shell {
 
     private enum OutputMethod {
         HTML, CONSOLE
+    }
+
+    private interface CharApplier {
+        void apply(char c);
     }
 
 }
