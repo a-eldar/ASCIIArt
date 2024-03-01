@@ -1,21 +1,27 @@
-<mxfile host="app.diagrams.net" modified="2024-03-01T23:16:16.815Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" etag="3kMu89JOlg4xir-mV3eh" version="24.0.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-01T23:20:00.292Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" etag="Tb-RKEaZtE5oQnWHUwj5" version="24.0.0" type="github">
   <diagram name="‫עמוד-1‬" id="9FOxikn_2bk7BjKEbO-x">
-    <mxGraphModel dx="778" dy="430" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1400" dy="775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="Vb6RsHlkbNNhMtVp6kEj-1" value="ascii_art Package" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry width="820" height="680" as="geometry" />
+          <mxGeometry width="890" height="680" as="geometry" />
         </mxCell>
         <mxCell id="Vb6RsHlkbNNhMtVp6kEj-2" value="" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" parent="Vb6RsHlkbNNhMtVp6kEj-1" vertex="1">
-          <mxGeometry width="775.0000000000001" height="434.2456140350878" relative="1" as="geometry">
+          <mxGeometry width="830" height="434.25" relative="1" as="geometry">
             <mxPoint y="30" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="xFL0W7bVsGVKbV0ON2sQ-82" value="AsciiArtAlgorithm" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="Vb6RsHlkbNNhMtVp6kEj-1">
-          <mxGeometry x="590" y="60.38" width="220" height="217.62" as="geometry">
+        <mxCell id="xFL0W7bVsGVKbV0ON2sQ-82" value="MessageConstants" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="Vb6RsHlkbNNhMtVp6kEj-1">
+          <mxGeometry x="590" y="60.38" width="250" height="189.62" as="geometry">
             <mxRectangle x="210" y="300" width="100" height="30" as="alternateBounds" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="xFL0W7bVsGVKbV0ON2sQ-83" value=" + USER_INPUT_PROMPT: String                                    &#xa; + RESOLUTION_CHANGE_ERROR: String                              &#xa; + IMAGE_CHANGE_ERROR: String                                   &#xa; + INCORRECT_COMMAND_ERROR: String                              &#xa; + ADD_CHAR_ERROR: String                                       &#xa; + INVALID_CHAR_ADD_ERROR: String                               &#xa; + REMOVE_CHAR_ERROR: String                                    &#xa; + INVALID_CHAR_REMOVE_ERROR: String                            &#xa; + RESOLUTION_BOUNDS_ERROR: String                              &#xa; + OUTPUT_METHOD_ERROR: String                                  &#xa; + CHAR_SET_EMPTY_EXCEPTION: String &#xa;                         " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Vb6RsHlkbNNhMtVp6kEj-1">
+          <mxGeometry x="590" y="83" width="300" height="188.45" as="geometry" />
+        </mxCell>
+        <mxCell id="xFL0W7bVsGVKbV0ON2sQ-84" value=" + printResolutionSetMessage(int): void                         &#xa;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;fillColor=none;gradientColor=none;" vertex="1" parent="Vb6RsHlkbNNhMtVp6kEj-1">
+          <mxGeometry x="590" y="250" width="250" height="30" as="geometry" />
         </mxCell>
         <mxCell id="xFL0W7bVsGVKbV0ON2sQ-22" value="Image Package" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry y="800" width="360" height="250" as="geometry" />
