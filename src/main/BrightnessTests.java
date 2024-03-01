@@ -35,9 +35,9 @@ public class BrightnessTests {
     }
 
     private static SubImgCharMatcher getMatcher() {
-        ArrayList<Character> chars = new ArrayList<>();
+        char[] chars = new char[MAX_ASCII - MIN_ASCII + 1];
         for (char c = MIN_ASCII; c <= MAX_ASCII; c++)
-            chars.add(c);
+            chars[c - MIN_ASCII] = c;
         return new SubImgCharMatcher(chars);
     }
 
