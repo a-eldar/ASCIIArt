@@ -16,17 +16,24 @@ import java.util.List;
  */
 public class Shell {
 
+    /** Default image file path */
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
+    /** Default font for HTML output */
     public static final String HTML_FONT = "Courier New";
+    /** HTML file extension */
     public static final String HTML_EXTENSION = ".html";
+    /** Character to start file extension */
     public static final char EXTENSION_START = '.';
+    /** Minimum ASCII character */
     public static final char MIN_ASCII = ' ';
+    /** Maximum ASCII character */
     public static final char MAX_ASCII = '~';
     public static final char RANGE_SEPARATOR = '-';
     private final SubImgCharMatcher charMatcher;
     private int resolution;
     private OutputMethod outputMethod;
-    private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    private static final char[] DEFAULT_CHAR_SET = {'0', '1', '2', '3',
+            '4', '5', '6', '7', '8', '9'};
     private final static int DEFAULT_RESOLUTION = 128;
 
     private ModifiedImage image = new ModifiedImage(DEFAULT_IMAGE_PATH);
@@ -94,8 +101,10 @@ public class Shell {
                     AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, charMatcher);
                     switch (outputMethod) {
                         case HTML:
-                            String path = imageFilePath.substring(0, imageFilePath.lastIndexOf(EXTENSION_START));
-                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path + HTML_EXTENSION, HTML_FONT);
+                            String path = imageFilePath.substring(0,
+                                    imageFilePath.lastIndexOf(EXTENSION_START));
+                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path +
+                                    HTML_EXTENSION, HTML_FONT);
                             htmlAsciiOutput.out(algo.run());
                             break;
                         case CONSOLE:
@@ -284,6 +293,17 @@ public class Shell {
 
     private interface CharApplier {
         void apply(char c);
+    }
+
+
+    /**
+     * Main method to run the shell.
+     * @param args Command line arguments
+     * @throws IOException If there is a problem with the image file
+     */
+    public static void main(String[] args) throws IOException {
+        Shell shell = new Shell();
+        shell.run();
     }
 
 }
