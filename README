@@ -1,7 +1,7 @@
 ofekelly,eldar04
 314621897,214728131
 
-1. here i need to explain the uml diagram of the project, whats the rule of each class and how they are
+1. Here we need to explain the uml diagram of the project, whats the rule of each class and how they are
 connected to each other:
 The UML diagram of the project consists of the following classes:
 - SubImgCharMatcher
