@@ -1,0 +1,112 @@
+ofekelly,eldar04
+314621897,214728131
+
+1. here i need to explain the uml diagram of the project, whats the rule of each class and how they are
+connected to each other:
+The UML diagram of the project consists of the following classes:
+- SubImgCharMatcher
+
+the rule of each class:
+- SubImgCharMatcher: This class is responsible for matching a given character to a sub-image. It maintains a
+charset of characters, where each character is associated with a brightness value. The class provides
+methods to add characters to the charset, match a sub-image to a character, and retrieve the brightness
+value of a character. It also includes methods to clear the charset and iterate over the characters.
+
+BrightnessMap: This class is responsible for representing a sub-image as a 2D array of brightness values. It
+provides methods to set and get brightness values at specific coordinates, as well as to calculate the
+average brightness value of the sub-image.
+
+CharConverter: This class is responsible for converting a sub-image to a character based on its brightness
+value. It maintains a charset of characters, where each character is associated with a range of brightness
+values. The class provides methods to add characters to the charset, convert a sub-image to a character,
+and iterate over the characters.
+
+Image: This class is responsible for representing an image as a 2D array of pixels. It provides methods to
+load an image from a file, get the dimensions of the image, and get the pixel value at specific coordinates.
+
+ModifiedImage: This class is responsible for representing a modified image as a 2D array of pixels. It
+provides methods to modify the brightness of the image, save the modified image to a file, and get the
+pixel value at specific coordinates.
+
+AsciiArtAlgorithm: This class is responsible for implementing the algorithm to convert an image to ASCII
+art. It utilizes the SubImgCharMatcher, CharConverter, and Image classes to match sub-images to
+characters, convert sub-images to characters, and load the original image.
+
+MessageConstants: This class is responsible for defining constants used for error messages and other
+messages in the program. It provides static final fields for different types of messages, such as input
+errors and program information.
+
+Shell: This class is responsible for providing a command-line interface for the user to interact with the
+program. It utilizes the AsciiArtAlgorithm class to convert images to ASCII art and the ModifiedImage
+class to save the modified images.
+
+the connection between the classes:
+- SubImgCharMatcher is connected to CharConverter and Image classes.
+- CharConverter is connected to Image class.
+- Image is connected to ModifiedImage class.
+- ModifiedImage is connected to AsciiArtAlgorithm class.
+- AsciiArtAlgorithm is connected to SubImgCharMatcher, CharConverter, and Image classes.
+- Shell is connected to AsciiArtAlgorithm and ModifiedImage classes.
+
+2. In the provided code, several Java data structures were utilized to handle different aspects of the task.
+Here's a list of the data structures used, along with their usage, reason for choice, and runtime complexity:
+
+HashMap (java.util.HashMap):
+
+Usage: Used in the SubImgCharMatcher class to map characters to their respective brightness values.
+Reason for Choice: Chosen for its ability to efficiently map keys to values, allowing for fast retrieval of
+brightness values based on characters. This was suitable for associating characters with their brightness
+levels.
+Runtime Complexity: Average time complexity for insertion, deletion, and lookup operations is O(1) under
+normal circumstances. However, in worst-case scenarios, it can degrade to O(n).
+
+LinkedList (java.util.LinkedList):
+
+Usage: Used in the getSubImages method of the ModifiedImage class to store sub-images.
+Reason for Choice: Chosen for its dynamic size and efficient insertion and deletion operations, which are
+suitable for storing and manipulating lists of variable size.
+Runtime Complexity: Insertions and deletions have a time complexity of O(1) when adding/removing elements
+from either end of the list. However, accessing elements by index has a time complexity of O(n).
+
+TreeSet (java.util.TreeSet):
+
+Usage: Used in the BrightnessMap class to store nodes sorted by brightness.
+Reason for Choice: Chosen for its automatic sorting of elements and efficient retrieval of elements in sorted
+ order, which was necessary for finding characters that best match a given brightness.
+Runtime Complexity: Insertions, deletions, and lookups have a time complexity of O(log n) due to the
+underlying balanced binary search tree structure.
+
+
+
+3. We utilized Java's exception handling mechanism to handle errors in user input and print error messages.
+Here's how it was done:
+-Using Exception Model:
+In cases where invalid input is provided (like an empty string), we threw IllegalArgumentException.
+This type of exception serves to indicate input errors.
+-Printing Error Messages:
+In each exception case, code was implemented to print an appropriate error message.
+For example, in the case of IllegalArgumentException, a message was printed stating that the input must
+contain at least one character.
+
+Each of these exceptions is handled within a try-catch block, where the exception is caught and the
+corresponding error message is printed. This way, the code provides proper and effective handling of possible
+ errors that may occur when taking input from the user.
+
+
+
+4. we explain the additions made to the API of the SubImgCharMatcher class:
+added the following methods:
+Added clearChars Method:
+Reason: The clearChars method was added to remove all characters from the charset maintained by
+ the SubImgCharMatcher.
+Explanation: This method provides a convenient way to clear the charset, resetting it to an empty state. It
+ensures that the SubImgCharMatcher can be easily reinitialized with a new set of characters if
+ needed, without having to manually remove each character one by one.
+
+Added iterator Method Override:
+Reason: The iterator method was overridden to allow iteration over the charset maintained by the
+ SubImgCharMatcher.
+Explanation: By overriding the iterator method, the SubImgCharMatcher class implements the Iterable interface,
+ enabling to iterate over the characters and their corresponding brightness values in the charset.
+ This makes it easier to traverse the charset and perform operations or access information about each
+ character.
