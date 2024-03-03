@@ -112,7 +112,7 @@ In cases where invalid input is provided (like an empty string), we threw Illega
 This type of exception serves to indicate input errors.
 -Printing Error Messages:
 In each exception case, code was implemented to print an appropriate error message.
-For example, in the case of IllegalArgumentException, a message was printed stating that the input must
+For example, in one case of IllegalArgumentException, a message was printed stating that the input must
 contain at least one character.
 
 Each of these exceptions is handled within a try-catch block, where the exception is caught and the
@@ -121,7 +121,7 @@ corresponding error message is printed. This way, the code provides proper and e
 
 
 
-4. we explain the additions made to the API of the SubImgCharMatcher class:
+4. We explain the additions made to the API of the SubImgCharMatcher class:
 added the following methods:
 Added clearChars Method:
 Reason: The clearChars method was added to remove all characters from the charset maintained by
@@ -137,3 +137,5 @@ Explanation: By overriding the iterator method, the SubImgCharMatcher class impl
  enabling to iterate over the characters and their corresponding brightness values in the charset.
  This makes it easier to traverse the charset and perform operations or access information about each
  character.
+ This is used, for instance, in the Shell class to display the characters and their brightness values to the
+    user, in ascending order according to ascii value.

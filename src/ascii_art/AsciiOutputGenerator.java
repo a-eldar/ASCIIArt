@@ -1,6 +1,7 @@
-package ascii_output;
+package ascii_art;
 
-import ascii_art.AsciiArtAlgorithm;
+import ascii_output.ConsoleAsciiOutput;
+import ascii_output.HtmlAsciiOutput;
 
 /**
  * Generate the output of the ASCII art.

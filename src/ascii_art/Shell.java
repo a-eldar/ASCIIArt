@@ -1,7 +1,5 @@
 package ascii_art;
 
-import ascii_output.AsciiOutputGenerator;
-import ascii_output.OutputMethod;
 import image.ModifiedImage;
 import image_char_matching.SubImgCharMatcher;
 

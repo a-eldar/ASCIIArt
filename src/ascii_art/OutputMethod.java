@@ -1,4 +1,4 @@
-package ascii_output;
+package ascii_art;
 
 public enum OutputMethod {
     HTML, CONSOLE
