@@ -28,7 +28,8 @@ public class AsciiOutputGenerator {
      * @param outputMethod The method of output
      * @param algo The algorithm to generate the ASCII art
      */
-    public static void generateOutput(String imageFilePath, OutputMethod outputMethod, AsciiArtAlgorithm algo) {
+    public static void generateOutput(String imageFilePath, OutputMethod outputMethod,
+                                      AsciiArtAlgorithm algo) {
         switch (outputMethod) {
             case HTML:
                 String path = imageFilePath.substring(0,
