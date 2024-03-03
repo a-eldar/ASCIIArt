@@ -145,14 +145,4 @@ public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double
         return brightnessMap.iterator();
     }
 
-    // TO REMOVE
-
-    /**
-     * Get the brightness of a character.
-     * @param c The character to get the brightness of
-     * @return The brightness of the character
-     */
-    public double getCharBrightness(char c) {
-        return brightnessMap.getBrightness(c);
-    }
 }
