@@ -1,13 +1,12 @@
 package ascii_art;
 
-import ascii_output.ConsoleAsciiOutput;
-import ascii_output.HtmlAsciiOutput;
+import ascii_output.AsciiOutputGenerator;
+import ascii_output.OutputMethod;
 import image.ModifiedImage;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
 import java.util.AbstractMap;
-import java.util.List;
 
 /**
  * This class is used to run the shell for the ASCII art program.
@@ -18,12 +17,7 @@ public class Shell {
 
     /** Default image file path */
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
-    /** Default font for HTML output */
-    public static final String HTML_FONT = "Courier New";
-    /** HTML file extension */
-    public static final String HTML_EXTENSION = ".html";
-    /** Character to start file extension */
-    public static final char EXTENSION_START = '.';
+
     /** Minimum ASCII character */
     public static final char MIN_ASCII = ' ';
     /** Maximum ASCII character */
@@ -100,19 +94,7 @@ public class Shell {
 
                 case "asciiArt":
                     AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, resolution, charMatcher);
-                    switch (outputMethod) {
-                        case HTML:
-                            String path = imageFilePath.substring(0,
-                                    imageFilePath.lastIndexOf(EXTENSION_START));
-                            HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput(path +
-                                    HTML_EXTENSION, HTML_FONT);
-                            htmlAsciiOutput.out(algo.run());
-                            break;
-                        case CONSOLE:
-                            ConsoleAsciiOutput consoleAsciiOutput = new ConsoleAsciiOutput();
-                            consoleAsciiOutput.out(algo.run());
-                            break;
-                    }
+                    AsciiOutputGenerator.generateOutput(imageFilePath, outputMethod, algo);
                     break;
                 default:
                     System.out.println(MessageConstants.INCORRECT_COMMAND_ERROR);
@@ -276,21 +258,15 @@ public class Shell {
     }
 
     private void changeOutputMethod(String method) {
-        switch (method.toLowerCase()) {
-            case "html":
-                this.outputMethod = OutputMethod.HTML;
-                break;
-            case "console":
-                this.outputMethod = OutputMethod.CONSOLE;
-                break;
-            default:
-                System.out.println(MessageConstants.OUTPUT_METHOD_ERROR);
+        OutputMethod newMethod = AsciiOutputGenerator.changeOutputMethod(method);
+        if (newMethod != null) {
+            this.outputMethod = newMethod;
+        }
+        else {
+            System.out.println(MessageConstants.OUTPUT_METHOD_ERROR);
         }
     }
 
-    private enum OutputMethod {
-        HTML, CONSOLE
-    }
 
     private interface CharApplier {
         void apply(char c);

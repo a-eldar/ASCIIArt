@@ -5,9 +5,20 @@ ofekelly,eldar04
 connected to each other:
 The UML diagram of the project consists of the following classes:
 - SubImgCharMatcher
+- BrightnessMap
+- CharConverter
+- Image
+- ModifiedImage
+- AsciiArtAlgorithm
+- MessageConstants
+- Shell
+- KeyboardInput
+- ConsoleAsciiOutput
+- HtmlAsciiOutput
+- AsciiOutputGenerator
 
 the rule of each class:
-- SubImgCharMatcher: This class is responsible for matching a given character to a sub-image. It maintains a
+SubImgCharMatcher: This class is responsible for matching a given character to a sub-image. It maintains a
 charset of characters, where each character is associated with a brightness value. The class provides
 methods to add characters to the charset, match a sub-image to a character, and retrieve the brightness
 value of a character. It also includes methods to clear the charset and iterate over the characters.
@@ -40,13 +51,27 @@ Shell: This class is responsible for providing a command-line interface for the 
 program. It utilizes the AsciiArtAlgorithm class to convert images to ASCII art and the ModifiedImage
 class to save the modified images.
 
-the connection between the classes:
-- SubImgCharMatcher is connected to CharConverter and Image classes.
-- CharConverter is connected to Image class.
-- Image is connected to ModifiedImage class.
-- ModifiedImage is connected to AsciiArtAlgorithm class.
-- AsciiArtAlgorithm is connected to SubImgCharMatcher, CharConverter, and Image classes.
-- Shell is connected to AsciiArtAlgorithm and ModifiedImage classes.
+KeyboardInput: This class is responsible for providing methods to read input from the keyboard as strings.
+
+ConsoleAsciiOutput: This class is responsible for providing methods to output ASCII art to the console.
+
+HtmlAsciiOutput: This class is responsible for providing methods to output ASCII art to an HTML file.
+
+AsciiOutputGenerator: This class is responsible for generating ASCII art output in different formats, such as
+console and HTML. It utilizes the ConsoleAsciiOutput and HtmlAsciiOutput classes to output the ASCII art
+to the console and an HTML file, respectively.
+The goal of the class is to hide the implementation details of the output format from the Shell class,
+allowing for easy extensibility to support additional output formats in the future.
+
+
+The connections between the classes:
+- Shell uses AsciiArtAlgorithm and AsciiOutputGenerator,
+    and contains a ModifiedImage object and a SubImgCharMatcher object.
+- AsciiArtAlgorithm contains a SubImgCharMatcher object and a ModifiedImage object.
+- SubImgCharMatcher uses CharConverter and contains a BrightnessMap object.
+- ModifiedImage contains an Image object.
+- ConsoleAsciiOutput and HtmlAsciiOutput are implementations of AsciiOutput.
+- AsciiOutputGenerator uses ConsoleAsciiOutput and HtmlAsciiOutput.
 
 2. In the provided code, several Java data structures were utilized to handle different aspects of the task.
 Here's a list of the data structures used, along with their usage, reason for choice, and runtime complexity:
@@ -54,6 +79,7 @@ Here's a list of the data structures used, along with their usage, reason for ch
 HashMap (java.util.HashMap):
 
 Usage: Used in the SubImgCharMatcher class to map characters to their respective brightness values.
+        Used in the BrightnessMap class to map characters to their respective brightness values.
 Reason for Choice: Chosen for its ability to efficiently map keys to values, allowing for fast retrieval of
 brightness values based on characters. This was suitable for associating characters with their brightness
 levels.
@@ -71,6 +97,7 @@ from either end of the list. However, accessing elements by index has a time com
 TreeSet (java.util.TreeSet):
 
 Usage: Used in the BrightnessMap class to store nodes sorted by brightness.
+        Also used in the same class to store characters sorted by ascii value.
 Reason for Choice: Chosen for its automatic sorting of elements and efficient retrieval of elements in sorted
  order, which was necessary for finding characters that best match a given brightness.
 Runtime Complexity: Insertions, deletions, and lookups have a time complexity of O(log n) due to the
