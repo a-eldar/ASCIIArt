@@ -10,8 +10,8 @@ import java.util.AbstractMap.SimpleEntry;
 public class SubImgCharMatcher implements Iterable<SimpleEntry<Character, Double>>{
     private final BrightnessMap brightnessMap = new BrightnessMap();
     private static final HashMap<Character, Double> CHAR_BRIGHTNESS = new HashMap<>();
-    double maxBrightness;
-    double minBrightness;
+    private double maxBrightness;
+    private double minBrightness;
 
     /**
      * Create a new SubImgCharMatcher with the given charset.
