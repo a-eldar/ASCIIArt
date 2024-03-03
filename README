@@ -5,9 +5,19 @@ ofekelly,eldar04
 connected to each other:
 The UML diagram of the project consists of the following classes:
 - SubImgCharMatcher
+- BrightnessMap
+- CharConverter
+- Image
+- ModifiedImage
+- AsciiArtAlgorithm
+- MessageConstants
+- Shell
+- KeyboardInput
+- ConsoleAsciiOutput
+- HtmlAsciiOutput
 
 the rule of each class:
-- SubImgCharMatcher: This class is responsible for matching a given character to a sub-image. It maintains a
+SubImgCharMatcher: This class is responsible for matching a given character to a sub-image. It maintains a
 charset of characters, where each character is associated with a brightness value. The class provides
 methods to add characters to the charset, match a sub-image to a character, and retrieve the brightness
 value of a character. It also includes methods to clear the charset and iterate over the characters.
@@ -40,13 +50,19 @@ Shell: This class is responsible for providing a command-line interface for the 
 program. It utilizes the AsciiArtAlgorithm class to convert images to ASCII art and the ModifiedImage
 class to save the modified images.
 
-the connection between the classes:
-- SubImgCharMatcher is connected to CharConverter and Image classes.
-- CharConverter is connected to Image class.
-- Image is connected to ModifiedImage class.
-- ModifiedImage is connected to AsciiArtAlgorithm class.
-- AsciiArtAlgorithm is connected to SubImgCharMatcher, CharConverter, and Image classes.
-- Shell is connected to AsciiArtAlgorithm and ModifiedImage classes.
+KeyboardInput: This class is responsible for providing methods to read input from the keyboard as strings.
+
+ConsoleAsciiOutput: This class is responsible for providing methods to output ASCII art to the console.
+
+HtmlAsciiOutput: This class is responsible for providing methods to output ASCII art to an HTML file.
+
+// the connection between the classes:
+// - SubImgCharMatcher is connected to CharConverter and Image classes.
+// - CharConverter is connected to Image class.
+// - Image is connected to ModifiedImage class.
+// - ModifiedImage is connected to AsciiArtAlgorithm class.
+// - AsciiArtAlgorithm is connected to SubImgCharMatcher, CharConverter, and Image classes.
+// - Shell is connected to AsciiArtAlgorithm and ModifiedImage classes.
 
 2. In the provided code, several Java data structures were utilized to handle different aspects of the task.
 Here's a list of the data structures used, along with their usage, reason for choice, and runtime complexity:

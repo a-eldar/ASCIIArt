@@ -28,6 +28,7 @@ public class Shell {
     public static final char MIN_ASCII = ' ';
     /** Maximum ASCII character */
     public static final char MAX_ASCII = '~';
+    /** Range separator character */
     public static final char RANGE_SEPARATOR = '-';
     private final SubImgCharMatcher charMatcher;
     private int resolution;
